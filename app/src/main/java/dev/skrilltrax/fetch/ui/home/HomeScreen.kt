@@ -46,15 +46,11 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Fetch") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = refreshData, containerColor = MaterialTheme.colorScheme.primary) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
+            FloatingActionButton(onClick = refreshData) {
+                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
             }
         }
     ) { paddingValues ->
