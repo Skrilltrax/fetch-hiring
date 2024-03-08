@@ -17,13 +17,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ListItem as MaterialListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,15 +52,21 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-        if (uiState.isLoading) {
-            LoadingScreen()
-        } else if (uiState.isSuccess) {
-            ListScreen(
-                data = uiState.data,
-                modifier = modifier.padding(paddingValues = paddingValues)
-            )
-        } else {
-            ErrorScreen(errorMessage = uiState.errorMessage)
+        when (uiState) {
+            is HomeScreenLoadingUiState -> {
+                LoadingScreen()
+            }
+
+            is HomeScreenSuccessUiState -> {
+                ListScreen(
+                    data = uiState.data,
+                    modifier = modifier.padding(paddingValues = paddingValues)
+                )
+            }
+
+            is HomeScreenErrorUiState -> {
+                ErrorScreen(errorMessage = uiState.errorMessage)
+            }
         }
     }
 }
@@ -111,7 +115,11 @@ fun ErrorScreen(
 ) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(imageVector = Icons.Default.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
             Text(text = errorMessage)
         }
     }
@@ -135,6 +143,6 @@ fun PreviewLoadingScreen() {
 @Composable
 fun PreviewHomeScreen() {
     FetchTheme {
-        HomeScreen(uiState = HomeScreenUiState.loadingUiState(), refreshData = {})
+        HomeScreen(uiState = HomeScreenLoadingUiState, refreshData = {})
     }
 }

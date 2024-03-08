@@ -14,26 +14,26 @@ class HomeScreenViewModel @Inject constructor(
     private val groupedSortedListUseCase: GroupedSortedListUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeScreenUiState.loadingUiState())
+    private val _uiState: MutableStateFlow<HomeScreenUiState> = MutableStateFlow(HomeScreenLoadingUiState)
     val uiState = _uiState.asStateFlow()
 
     init { displayItems() }
 
     fun displayItems() {
         viewModelScope.launch {
-            _uiState.emit(HomeScreenUiState.loadingUiState())
+            _uiState.emit(HomeScreenLoadingUiState)
 
             val result = groupedSortedListUseCase.get()
 
             if (result.isFailure) {
-                _uiState.emit(HomeScreenUiState.errorUiState("Error fetching items"))
+                _uiState.emit(HomeScreenErrorUiState("Error fetching items"))
             } else {
                 val data = result.getOrNull()
 
                 if (data == null) {
-                    _uiState.emit(HomeScreenUiState.errorUiState("Error fetching items"))
+                    _uiState.emit(HomeScreenErrorUiState("Error fetching items"))
                 } else {
-                    _uiState.emit(HomeScreenUiState.successUiState(data))
+                    _uiState.emit(HomeScreenSuccessUiState(data))
                 }
             }
         }

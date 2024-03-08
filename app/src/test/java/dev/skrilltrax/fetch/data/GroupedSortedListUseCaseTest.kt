@@ -10,7 +10,6 @@ import kotlin.test.assertTrue
 
 class GroupedSortedListUseCaseTest {
 
-
     @Test
     fun testUseCaseSuccess() = runTest {
         val dispatcher = StandardTestDispatcher(testScheduler)
