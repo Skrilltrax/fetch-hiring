@@ -26,6 +26,13 @@ class CoroutineModule {
     fun provideMainDispatcher(): CoroutineDispatcher {
         return Dispatchers.Main
     }
+
+    @Provides
+    @Reusable
+    @CpuDispatcher
+    fun provideCpuDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Default
+    }
 }
 
 @Qualifier
@@ -35,3 +42,7 @@ annotation class IoDispatcher
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class MainDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class CpuDispatcher
